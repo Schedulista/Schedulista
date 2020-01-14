@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,17 +24,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.schedulista.R;
-import com.example.schedulista.ui.login.LoginViewModel;
-import com.example.schedulista.ui.login.LoginViewModelFactory;
+import com.example.schedulista.Registration;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private Button button;
     private LoginViewModel loginViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        button = (Button)findViewById(R.id.register);
+        button.setOnClickListener(
+                new View.OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View view) {
+
+                        Intent intent = new Intent(LoginActivity.this, Registration.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 

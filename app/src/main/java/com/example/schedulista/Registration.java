@@ -2,6 +2,8 @@ package com.example.schedulista;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +13,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.example.schedulista.ui.login.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -19,11 +20,10 @@ import android.widget.Button;
 public class Registration extends AppCompatActivity {
 
 
-    DatabaseHelper mydb ;
     EditText editName, editEmail,editPassword,editContact;
-    Button register = findViewById(R.id.register);
-    String city,editGender;
-
+    Button register;
+    String city,editGender,query;
+    DatabaseHelper mydb;
 
 
 
@@ -33,14 +33,21 @@ public class Registration extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        final Spinner spinner = (Spinner)findViewById(R.id.City);
+        final Spinner spinner = (Spinner) findViewById(R.id.City);
+
+        register = findViewById(R.id.register);
+        mydb = new DatabaseHelper(this);
+
+
+
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Jamnagar");
         arrayList.add("Rajkot");
         arrayList.add("Ahmedabad");
         arrayList.add("Baroda");
+        arrayList.add("Veraval");
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,arrayList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, arrayList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
 
@@ -59,14 +66,6 @@ public class Registration extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-    }
-    public void addData()
-    {
         register.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -84,20 +83,20 @@ public class Registration extends AppCompatActivity {
                         boolean isInserted = mydb.insertData(editName.getText().toString(),editEmail.getText().toString(),editPassword.getText().toString(),city,editGender,editContact.getText().toString());
                         if(isInserted == true)
                         {
-                            Toast.makeText(Registration.this,"data inserted",Toast.LENGTH_LONG).show();
+                            Toast.makeText(Registration.this,"Data inserted successfully",Toast.LENGTH_LONG).show();
                         }
                         else
                         {
-                            Toast.makeText(Registration.this,"error",Toast.LENGTH_LONG).show();
+                            Toast.makeText(Registration.this,"Error",Toast.LENGTH_LONG).show();
                         }
-
 
 
 
                     }
                 }
         );
-    }
 
+
+    }
 
 }

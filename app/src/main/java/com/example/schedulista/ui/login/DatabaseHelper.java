@@ -2,8 +2,10 @@ package com.example.schedulista.ui.login;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -53,5 +55,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         {
             return true;
         }
+    }
+    public String getData(String email)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res = db.rawQuery("select Password from users where Email=?",new String[]{email});
+        res.moveToFirst();
+        String pwd = res.getString(res.getColumnIndex("Password"));
+        return pwd;
+
+
+
+
     }
 }

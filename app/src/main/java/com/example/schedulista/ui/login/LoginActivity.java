@@ -6,6 +6,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -30,13 +32,16 @@ import com.example.schedulista.activity_gender;
 public class LoginActivity extends AppCompatActivity {
 
     private Button button;
-    private LoginViewModel loginViewModel;
     Button login;
+    DatabaseHelper mydb;
+    EditText email,password;
+    String db_password;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mydb = new DatabaseHelper(this);
         button = findViewById(R.id.register);
         button.setOnClickListener(
                 new View.OnClickListener() {
@@ -58,12 +63,21 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        Intent intent = new Intent(LoginActivity.this, activity_gender.class);
-                        startActivity(intent);
+                        email = (EditText) findViewById(R.id.username);
+                        password = (EditText) findViewById(R.id.password);
+                        db_password = mydb.getData(email.getText().toString());
+                        if (password.getText().toString().equals(db_password)) {
+                            Intent intent = new Intent(LoginActivity.this, activity_gender.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Incorrect Password", Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-        );
+                    }
+                    );
+
+                    }
 
 
-    }
 }
+
